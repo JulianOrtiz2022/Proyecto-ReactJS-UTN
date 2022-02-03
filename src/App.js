@@ -1,9 +1,10 @@
 import Public from "./Routes/Public";
+import AuthProvider from "./Context/AuthProvider";
 function App() {
   return (
-    <div className="App">
+    <AuthProvider>
       <Public/>
-    </div>
+    </AuthProvider>
   );
 }
 

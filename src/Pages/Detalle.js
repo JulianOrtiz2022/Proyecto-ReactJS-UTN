@@ -1,9 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import {useParams} from "react-router-dom";
+import Loading from '../Components/Loading';
 import {getByIdProductos} from  "../Services/ProductosServices";
-import {getByIdProductos1} from "../Services/ProductosServices1";
-import {getByIdProductos2} from "../Services/ProductosServices2";
-import {getByIdProductos3} from "../Services/ProductosServices3"
 
 function Detalle() {
   const [producto,setProducto] = useState({})
@@ -14,9 +12,9 @@ function Detalle() {
     ()=>{
       const request = async ()=>{
         try{
-          const response = await getByIdProductos(id);
-          if(response.data){
-            setProducto(response.data)
+         const document = await getByIdProductos(id)
+          if(document){
+            setProducto(document.data()) // con data acceso a la informacion
             setLoading(false)
           }
         }catch(e){
@@ -27,73 +25,18 @@ function Detalle() {
     },
     [id]
   )
-  useEffect(
-    ()=>{
-      const request = async ()=>{
-        try{
-          const response = await getByIdProductos1(id);
-          if(response.data){
-            setProducto(response.data)
-            setLoading(false)
-          }
-        }catch(e){
-          console.log(e)
-        }
-      }
-      request()
-    },
-    [id]
-  )
-  useEffect(
-    ()=>{
-      const request = async ()=>{
-        try{
-          const response = await getByIdProductos2(id);
-          if(response.data){
-            setProducto(response.data)
-            setLoading(false)
-          }
-        }catch(e){
-          console.log(e)
-        }
-      }
-      request()
-    },
-    [id]
-  )
-  useEffect(
-    ()=>{
-      const request = async ()=>{
-        try{
-          const response = await getByIdProductos3(id);
-          if(response.data){
-            setProducto(response.data)
-            setLoading(false)
-          }
-        }catch(e){
-          console.log(e)
-        }
-      }
-      request()
-    },
-    [id]
-  )
-  if(loading){
     return (
-      <div>
-        Cargando ...
-  
-      </div>
-    );
-  }else{
-    return (
-      <div>
-        <p>{producto.title}</p>
-        <p>{producto.id}</p>
-      </div>
+      <Loading loading={loading} configuration={{animation:"grow", variant:"primary"}}>
+        <p><b>Nombre:</b></p>
+        <p>{producto.name}</p>
+        <p><b>Descripcion:</b></p>
+        <p>{producto.description}</p>
+        <p><b>Precio:</b></p>
+        <p>$ {producto.price}</p>
+        <p><b>SKU:</b></p>
+        <p>{producto.sku}</p>
+      </Loading>
     );
   }
-  
-}
 
 export default Detalle;
